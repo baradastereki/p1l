@@ -1,531 +1,226 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HiPill - های‌پیل</title>
+  <title>HiPill</title>
   <style>
-    /* ---------- Global Styles ---------- */
+    /* General Styles */
     body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f9;
+      background-color: #f3f4f6;
       color: #333;
-      transition: background-color 0.5s, color 0.5s;
-      direction: rtl; /* Default language: Persian */
-      text-align: right;
-    }
-    /* Theme Classes */
-    .theme-light {
-      background-color: #f4f4f9;
-      color: #333;
-    }
-    .theme-dark {
-      background-color: #111;
-      color: #eee;
-    }
-    .theme-rainbow {
-      background: linear-gradient(45deg, red, orange, yellow, green, cyan, blue, violet);
-      background-size: 400% 400%;
-      animation: rainbowBackground 10s infinite;
-      color: #fff;
-    }
-    @keyframes rainbowBackground {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
     }
 
-    /* ---------- Title Bar ---------- */
     .title-bar {
-      background-color: #5D5FEF;
-      color: white;
-      padding: 15px;
       text-align: center;
-      font-size: 20px;
+      padding: 1em;
+      color: white;
+      font-size: 1.5em;
       font-weight: bold;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
-    /* ---------- Containers (Cards) ---------- */
-    .container {
-      max-width: 500px;
-      margin: 20px auto;
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      position: relative; /* For positioning custom keyboard */
-      display: none;
-    }
-    .container.active {
-      display: block;
-    }
-    label {
-      display: block;
-      margin: 10px 0 5px;
-      font-weight: bold;
-    }
-    input, select, textarea, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      box-sizing: border-box;
-      transition: box-shadow 0.3s ease;
-    }
-    input:focus, textarea:focus, select:focus {
-      outline: none;
-      box-shadow: 0 2px 10px rgba(0,93,239,0.3);
-    }
-    button {
-      background-color: #5D5FEF;
-      color: white;
-      border: none;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: background-color 0.3s, transform 0.2s;
-    }
-    button:hover {
-      background-color: #4b4fc9;
-      transform: scale(1.03);
+    .lime-theme {
+      background-color: limegreen;
     }
 
-    /* ---------- Custom Keyboard ---------- */
-    .keyboard {
-      display: none; /* Initially hidden; shown when a target field is focused */
-      position: absolute;
-      flex-wrap: wrap;
-      gap: 5px;
-      background-color: #fff;
-      padding: 5px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-      z-index: 10;
-    }
-    .key {
-      background-color: #e3e5fc;
-      padding: 8px;
-      min-width: 36px;
-      text-align: center;
-      border-radius: 5px;
-      cursor: pointer;
-      user-select: none;
-      flex: 1;
-    }
-    .key:hover {
-      background-color: #5D5FEF;
-      color: #fff;
-    }
-    .hide-key {
-      background-color: #ff6666 !important;
-      color: white !important;
-    }
-    
-    /* ---------- Pill List Styles ---------- */
-    .pill-list ul {
-      list-style: none;
-      padding: 0;
-    }
-    .pill-list li {
-      background-color: #e3e5fc;
-      margin-bottom: 10px;
-      padding: 10px;
-      border-radius: 8px;
-    }
-    
-    /* ---------- Tab Bar ---------- */
-    .tab-bar {
+    .tabs {
+      display: flex;
+      justify-content: space-evenly;
       position: fixed;
       bottom: 0;
       width: 100%;
-      background-color: #5D5FEF;
-      display: flex;
-      justify-content: space-evenly;
-      padding: 10px 0;
-      box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
-      z-index: 1000;
+      background-color: #0078d4;
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
     }
-    .tab {
+
+    .tabs button {
       flex: 1;
-      text-align: center;
+      padding: 1em;
+      border: none;
+      background: none;
       color: white;
+      font-weight: bold;
       cursor: pointer;
-      padding: 10px 0;
+      transition: background-color 0.3s ease;
     }
-    .tab.active {
-      background-color: #4b4fc9;
+
+    .tabs button:hover {
+      background-color: #005a9e;
+    }
+
+    .tab-content {
+      display: none;
+      padding: 1em;
+      margin-bottom: 60px;
+      background: white;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      max-width: 600px;
+      margin: 20px auto 80px;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Inputs and Buttons */
+    input, button, select {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1em;
+    }
+
+    input:focus, select:focus, button:hover {
+      outline: none;
+      border-color: #0078d4;
+      box-shadow: 0 0 4px rgba(0, 120, 212, 0.6);
+    }
+
+    button {
+      background-color: #0078d4;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #005a9e;
     }
   </style>
 </head>
-<body>
-  <!-- Title Bar -->
-  <div class="title-bar" id="titleBar">HiPill - های‌پیل</div>
-
-  <!-- Main App Container -->
-  <div id="mainApp">
-    <!-- Add Pill Section -->
-    <div class="container active" id="addPillSection">
-      <h2 id="addPillHeader" style="text-align: center;">اضافه کردن دارو</h2>
-      <form id="addPillForm">
-        <label id="selectMedicineLabel" for="medicineSelect">انتخاب دارو:</label>
-        <select id="medicineSelect">
-          <option value="Vitamin C">ویتامین C</option>
-          <option value="Ibuprofen">ایبوپروفن</option>
-          <option value="Paracetamol">پاراستامول</option>
-          <option value="Amoxicillin">آموکسی سیلین</option>
-          <option value="Metformin">متفورمین</option>
-          <option value="Lisinopril">لیسینوپریل</option>
-          <option value="Atorvastatin">آتورواسیتاتین</option>
-          <option value="Simvastatin">سیمواستاتین</option>
-          <option value="Omeprazole">امپرازول</option>
-          <option value="Other">دیگر (دستی وارد کنید)</option>
-        </select>
-        <input type="text" id="customMedicine" style="display: none;" placeholder="نام دارو را وارد کنید" onfocus="showKeyboardForElement(this)" />
-
-        <label id="pillTimeLabel" for="pillTime">زمان:</label>
-        <input type="datetime-local" id="pillTime" required />
-
-        <label id="pillDetailsLabel" for="pillDetails">توضیحات:</label>
-        <textarea id="pillDetails" placeholder="یادداشت یا توضیحات" onfocus="showKeyboardForElement(this)"></textarea>
-
-        <label id="keyboardLanguageLabel" for="keyboardLanguage">زبان صفحه کلید:</label>
-        <select id="keyboardLanguage" onchange="renderKeyboard(this.value)">
-          <option value="fa" selected>فارسی</option>
-          <option value="en">English</option>
-          <option value="zh">中文</option>
-          <option value="numbers">اعداد</option>
-        </select>
-
-        <!-- Custom Keyboard (appears below the focused field) -->
-        <div class="keyboard" id="customKeyboard"></div>
-
-        <button type="submit" id="addPillButton">اضافه کردن</button>
-      </form>
-    </div>
-
-    <!-- Your Pills Section -->
-    <div class="container" id="yourPillsSection">
-      <h2 id="yourPillsHeader" style="text-align: center;">لیست داروهای شما</h2>
-      <div class="pill-list" id="pillList">
-        <!-- Dynamically added pills will appear here -->
+<body class="lime-theme">
+  <div id="app">
+    <header class="title-bar lime-theme">HiPill</header>
+    
+    <main id="content">
+      <!-- Add Reminders -->
+      <div id="add-reminder" class="tab-content active">
+        <h2>افزودن یادآور</h2>
+        <label for="pill-name">نام دارو:</label>
+        <input type="text" id="pill-name" placeholder="نام دارو">
+        
+        <label for="pill-dose">دوز دارو:</label>
+        <input type="text" id="pill-dose" placeholder="دوز دارو">
+        
+        <label for="pill-time">زمان:</label>
+        <input type="datetime-local" id="pill-time">
+        
+        <button id="add-pill">افزودن</button>
       </div>
-    </div>
 
-    <!-- Settings Section -->
-    <div class="container" id="settingsSection">
-      <h2 id="settingsHeader" style="text-align: center;">تنظیمات</h2>
-      <div>
-        <label id="themeLabel">انتخاب تم:</label><br>
-        <button type="button" onclick="setTheme('light')">🌞 سبک روشن</button>
-        <button type="button" onclick="setTheme('dark')">🌜 سبک تاریک</button>
-        <button type="button" onclick="setTheme('rainbow')">🌈 رنگین</button>
+      <!-- View Pills -->
+      <div id="view-pills" class="tab-content hidden">
+        <h2>مشاهده یادآورها</h2>
+        <ul id="pill-list"></ul>
       </div>
-      <div style="margin-top: 10px;">
-        <label id="appLangLabel">انتخاب زبان برنامه:</label><br>
-        <button type="button" onclick="switchAppLanguage('fa')">🇮🇷 فارسی</button>
-        <button type="button" onclick="switchAppLanguage('en')">🇬🇧 English</button>
-      </div>
-      <div style="margin-top: 10px;">
-        <label id="keyboardLangLabel">انتخاب زبان صفحه کلید:</label><br>
-        <select id="keyboardLanguageSettings" onchange="renderKeyboard(this.value)">
-          <option value="fa" selected>فارسی</option>
-          <option value="en">English</option>
-          <option value="zh">中文</option>
-          <option value="numbers">اعداد</option>
+
+      <!-- Settings -->
+      <div id="settings" class="tab-content hidden">
+        <h2>تنظیمات</h2>
+        <label for="theme-select">انتخاب تم:</label>
+        <select id="theme-select">
+          <option value="lime">لیم</option>
+          <option value="dark">تیره</option>
+          <option value="light">روشن</option>
         </select>
       </div>
-    </div>
+    </main>
+    
+    <nav class="tabs">
+      <button data-tab="add-reminder">افزودن یادآور</button>
+      <button data-tab="view-pills">مشاهده یادآور</button>
+      <button data-tab="settings">تنظیمات</button>
+    </nav>
   </div>
-
-  <!-- Tab Bar -->
-  <div class="tab-bar">
-    <div class="tab active" id="tabAdd" onclick="switchTab('addPillSection', this)">➕ <span id="tabAddLabel">اضافه کردن</span></div>
-    <div class="tab" id="tabYour" onclick="switchTab('yourPillsSection', this)">📋 <span id="tabListLabel">لیست داروها</span></div>
-    <div class="tab" id="tabSettings" onclick="switchTab('settingsSection', this)">⚙️ <span id="tabSettingsLabel">تنظیمات</span></div>
-  </div>
-
   <script>
-    // Language dictionary for UI texts
-    const languageData = {
-      fa: {
-        title: "HiPill - های‌پیل",
-        addPillHeader: "اضافه کردن دارو",
-        yourPillsHeader: "لیست داروهای شما",
-        settingsHeader: "تنظیمات",
-        selectMedicine: "انتخاب دارو:",
-        customMedicinePlaceholder: "نام دارو را وارد کنید",
-        pillTimeLabel: "زمان:",
-        pillDetailsLabel: "توضیحات:",
-        keyboardLanguageLabel: "زبان صفحه کلید:",
-        addPillButton: "اضافه کردن",
-        themeLabel: "انتخاب تم:",
-        appLangLabel: "انتخاب زبان برنامه:",
-        keyboardLangLabel: "انتخاب زبان صفحه کلید:",
-        tabAdd: "اضافه کردن",
-        tabList: "لیست داروها",
-        tabSettings: "تنظیمات",
-        noDetails: "بدون توضیح",
-        timeLeft: "زمان باقی‌مانده:",
-        missed: "فراموش شده",
-        hideKeyboard: "پنهان"
-      },
-      en: {
-        title: "HiPill",
-        addPillHeader: "Add Pill",
-        yourPillsHeader: "Your Pills",
-        settingsHeader: "Settings",
-        selectMedicine: "Select Medicine:",
-        customMedicinePlaceholder: "Enter medicine name",
-        pillTimeLabel: "Time:",
-        pillDetailsLabel: "Details:",
-        keyboardLanguageLabel: "Keyboard Language:",
-        addPillButton: "Add Pill",
-        themeLabel: "Select Theme:",
-        appLangLabel: "Select App Language:",
-        keyboardLangLabel: "Select Keyboard Language:",
-        tabAdd: "Add Pill",
-        tabList: "Your Pills",
-        tabSettings: "Settings",
-        noDetails: "No details",
-        timeLeft: "Time left:",
-        missed: "Missed",
-        hideKeyboard: "Hide"
-      }
-    };
+    const tabs = document.querySelectorAll('.tabs button');
+    const contents = document.querySelectorAll('.tab-content');
+    const pillListElement = document.getElementById('pill-list');
 
-    let currentAppLanguage = 'fa';
-    let currentKeyboardLanguage = 'fa';
-    const pills = [];
+    // Load saved pills from localStorage
+    let pills = JSON.parse(localStorage.getItem('pills')) || [];
 
-    // Update UI texts based on current language
-    function updateLanguageUI() {
-      const data = languageData[currentAppLanguage];
-      document.getElementById('titleBar').textContent = data.title;
-      document.getElementById('addPillHeader').textContent = data.addPillHeader;
-      document.getElementById('yourPillsHeader').textContent = data.yourPillsHeader;
-      document.getElementById('settingsHeader').textContent = data.settingsHeader;
-      document.getElementById('selectMedicineLabel').textContent = data.selectMedicine;
-      document.getElementById('customMedicine').placeholder = data.customMedicinePlaceholder;
-      document.getElementById('pillTimeLabel').textContent = data.pillTimeLabel;
-      document.getElementById('pillDetailsLabel').textContent = data.pillDetailsLabel;
-      document.getElementById('keyboardLanguageLabel').textContent = data.keyboardLanguageLabel;
-      document.getElementById('addPillButton').textContent = data.addPillButton;
-      document.getElementById('themeLabel').textContent = data.themeLabel;
-      document.getElementById('appLangLabel').textContent = data.appLangLabel;
-      document.getElementById('keyboardLangLabel').textContent = data.keyboardLangLabel;
-      document.getElementById('tabAddLabel').textContent = data.tabAdd;
-      document.getElementById('tabListLabel').textContent = data.tabList;
-      document.getElementById('tabSettingsLabel').textContent = data.tabSettings;
-    }
+    // Initialize app with saved data
+    updatePillList();
 
-    // Switch overall app language
-    function switchAppLanguage(lang) {
-      currentAppLanguage = lang;
-      if (lang === 'fa') {
-        document.body.dir = 'rtl';
-      } else {
-        document.body.dir = 'ltr';
-      }
-      document.body.lang = lang;
-      updateLanguageUI();
-      displayPills();
-    }
-
-    // Set theme
-    function setTheme(theme) {
-      document.body.classList.remove('theme-light','theme-dark','theme-rainbow');
-      if (theme === 'light') {
-        document.body.classList.add('theme-light');
-      } else if (theme === 'dark') {
-        document.body.classList.add('theme-dark');
-      } else if (theme === 'rainbow') {
-        document.body.classList.add('theme-rainbow');
-      }
-    }
-
-    // Set default datetime-local to now on page load
-    document.addEventListener('DOMContentLoaded', () => {
-      const now = new Date();
-      document.getElementById('pillTime').value = now.toISOString().slice(0,16);
-      renderKeyboard(currentKeyboardLanguage);
-      updateLanguageUI();
-
-      // Request permission and schedule a sample daily notification
-      if ("Notification" in window) {
-        Notification.requestPermission().then(permission => {
-          if (permission === "granted") {
-            setTimeout(() => {
-              new Notification(languageData[currentAppLanguage].title, {
-                body: currentAppLanguage === 'fa' ? "ردیابی شما عالی است!" : "Your tracking is good!",
-                icon: "https://via.placeholder.com/100"
-              });
-            }, 5000);
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const targetTab = tab.getAttribute('data-tab');
+        contents.forEach(content => {
+          content.classList.remove('active');
+          if (content.id === targetTab) {
+            content.classList.add('active');
           }
         });
-      }
+      });
     });
 
-    // Keyboard dictionaries with Space (␣) and Backspace (⌫)
-    const keyboards = {
-      fa: ['ا','ب','پ','ت','ث','ج','چ','ح','خ','د','ذ','ر','ز','ژ','س','ش','ص','ض','ط','ظ','ع','غ','ف','ق','ک','گ','ل','م','ن','و','ه','ی','␣','⌫'],
-      en: ['Q','W','E','R','T','Y','U','I','O','P','A','S','D','F','G','H','J','K','L','Z','X','C','V','B','N','M','␣','⌫'],
-      zh: ['你','好','吗','是','的','不','了','我','他','在','有','一','个','人','这','中','国','天','气','喝','茶','水','火','␣','⌫'],
-      numbers: ['0','1','2','3','4','5','6','7','8','9','␣','⌫']
-    };
+    document.getElementById('add-pill').addEventListener('click', addPill);
+    document.getElementById('theme-select').addEventListener('change', changeTheme);
 
-    // Render the custom keyboard based on selected language
-    function renderKeyboard(language) {
-      currentKeyboardLanguage = language;
-      const keyboard = document.getElementById('customKeyboard');
-      keyboard.innerHTML = '';
-      keyboards[language].forEach(key => {
-        const keyElem = document.createElement('div');
-        keyElem.className = 'key';
-        keyElem.textContent = key;
-        keyElem.onclick = () => handleKeyPress(key);
-        keyboard.appendChild(keyElem);
-      });
-      // Append a Hide Keyboard key
-      const hideButton = document.createElement('div');
-      hideButton.className = 'key hide-key';
-      hideButton.textContent = languageData[currentAppLanguage].hideKeyboard;
-      hideButton.onclick = hideKeyboard;
-      keyboard.appendChild(hideButton);
-    }
-
-    // Global variable to track the currently focused element
-    let currentFocusedElement = null;
-    // Show the custom keyboard positioned below the focused element (within the addPillSection)
-    function showKeyboardForElement(elem) {
-      currentFocusedElement = elem;
-      const containerRect = document.getElementById('addPillSection').getBoundingClientRect();
-      const elemRect = elem.getBoundingClientRect();
-      const keyboard = document.getElementById('customKeyboard');
-      keyboard.style.position = 'absolute';
-      keyboard.style.top = (elemRect.bottom - containerRect.top + 5) + 'px';
-      keyboard.style.left = (elemRect.left - containerRect.left) + 'px';
-      keyboard.style.display = 'flex';
-      renderKeyboard(currentKeyboardLanguage);
-    }
-
-    // Hide the custom keyboard manually via the Hide key
-    function hideKeyboard() {
-      document.getElementById('customKeyboard').style.display = 'none';
-      currentFocusedElement = null;
-    }
-
-    // Handle a key press from the custom keyboard: append the key to focused element
-    function handleKeyPress(key) {
-      if (!currentFocusedElement) return;
-      if (key === '⌫') {
-        currentFocusedElement.value = currentFocusedElement.value.slice(0, -1);
-      } else if (key === '␣') {
-        currentFocusedElement.value += ' ';
-      } else {
-        currentFocusedElement.value += key;
-      }
-    }
-
-    // Toggle custom medicine input visibility
-    function toggleCustomMedicine(selectElem) {
-      const customInput = document.getElementById('customMedicine');
-      if (selectElem.value === 'Other') {
-        customInput.style.display = 'block';
-      } else {
-        customInput.style.display = 'none';
-        customInput.value = '';
-      }
-    }
-
-    // Tab navigation: switch active container and update tab styles
-    function switchTab(sectionId, tabElem) {
-      document.querySelectorAll('.container').forEach(sec => sec.classList.remove('active'));
-      document.getElementById(sectionId).classList.add('active');
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      tabElem.classList.add('active');
-      if (sectionId === 'yourPillsSection') updatePillTimers();
-    }
-
-    // Add a new pill (including optional image handling if desired)
     function addPill() {
-      const medicineSelect = document.getElementById('medicineSelect');
-      let pillName = medicineSelect.value;
-      if (pillName === 'Other') {
-        pillName = document.getElementById('customMedicine').value.trim();
+      const pillName = document.getElementById('pill-name').value;
+      const pillDose = document.getElementById('pill-dose').value;
+      const pillTime = document.getElementById('pill-time').value;
+      
+      if (pillName && pillDose && pillTime) {
+        const pill = { name: pillName, dose: pillDose, time: new Date(pillTime), taken: false };
+        pills.push(pill);
+
+        // Save to localStorage
+        localStorage.setItem('pills', JSON.stringify(pills));
+
+        alert('یادآور اضافه شد');
+        updatePillList();
+      } else {
+        alert('لطفاً همه مقادیر را وارد کنید');
       }
-      const pillTime = document.getElementById('pillTime').value;
-      const pillDetails = document.getElementById('pillDetails').value.trim();
-      if (!pillName || !pillTime) {
-        alert(languageData[currentAppLanguage].addPillButton === 'اضافه کردن' ? 'لطفاً تمام فیلدها را پر کنید.' : 'Please fill in all fields.');
-        return;
-      }
-      // Optional image upload handling can be implemented if needed.
-      const pill = { name: pillName, time: new Date(pillTime), details: pillDetails };
-      pills.push(pill);
-      displayPills();
-      // Reset form fields
-      medicineSelect.selectedIndex = 0;
-      document.getElementById('customMedicine').style.display = 'none';
-      document.getElementById('customMedicine').value = '';
-      document.getElementById('pillDetails').value = '';
-      const now = new Date();
-      document.getElementById('pillTime').value = now.toISOString().slice(0,16);
     }
 
-    // Display pills in the "Your Pills" section
-    function displayPills() {
-      const pillList = document.getElementById('pillList');
-      pillList.innerHTML = '';
+    function updatePillList() {
+      pillListElement.innerHTML = '';
+
       pills.forEach((pill, index) => {
-        const pillItem = document.createElement('li');
-        pillItem.innerHTML = `
-          <strong>${pill.name}</strong><br>
-          ${pill.details || languageData[currentAppLanguage].noDetails}<br>
-          <span id="timer-${index}"></span><br>
-          <button onclick="removePill(${index})" style="background:red; color:white;">${languageData[currentAppLanguage].removeButton || 'Remove'}</button>
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `
+          ${pill.name} - ${pill.dose} - ${new Date(pill.time).toLocaleString()}
+          <button onclick="markAsTaken(${index})">خورده شد</button>
+          <button onclick="removePill(${index})">حذف</button>
         `;
-        pillList.appendChild(pillItem);
-        updateTimerForPill(index);
+        pillListElement.appendChild(listItem);
       });
     }
 
-    // Update countdown timer for each pill
-    function updateTimerForPill(index) {
-      const now = new Date();
-      const pillTime = pills[index].time;
-      let diff = pillTime - now;
-      const timerElem = document.getElementById('timer-' + index);
-      if(diff > 0) {
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        diff %= 1000 * 60 * 60 * 24;
-        const hours = Math.floor(diff / (1000 * 60 * 60));
-        diff %= 1000 * 60 * 60;
-        const minutes = Math.floor(diff / (1000 * 60));
-        timerElem.textContent = currentAppLanguage === 'fa'
-          ? `${languageData.fa.timeLeft} ${days} روز، ${hours} ساعت، ${minutes} دقیقه`
-          : `${languageData.en.timeLeft} ${days}d ${hours}h ${minutes}m`;
-        timerElem.style.color = "green";
-      } else {
-        timerElem.textContent = currentAppLanguage === 'fa' ? languageData.fa.missed : languageData.en.missed;
-        timerElem.style.color = "red";
-      }
+    function markAsTaken(index) {
+      pills[index].taken = true;
+
+      // Save to localStorage
+      localStorage.setItem('pills', JSON.stringify(pills));
+
+      alert(`${pills[index].name} خورده شد`);
+      updatePillList();
     }
 
-    // Update all timers every minute
-    setInterval(() => {
-      for (let i = 0; i < pills.length; i++) {
-        updateTimerForPill(i);
-      }
-    }, 60000);
-
-    // Remove a pill from the list
     function removePill(index) {
       pills.splice(index, 1);
-      displayPills();
+
+      // Save to localStorage
+      localStorage.setItem('pills', JSON.stringify(pills));
+
+      updatePillList();
+    }
+
+    function changeTheme() {
+      const theme = document.getElementById('theme-select').value;
+      document.body.className = theme + '-theme';
     }
   </script>
 </body>
